@@ -16,7 +16,7 @@ public class grappleHook : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (Input.GetKey (KeyCode.Mouse0)) 
+		if (Input.GetMouseButtonDown(0)) 
 		{
 			newGrapple();
 		}
@@ -54,6 +54,7 @@ public class grappleHook : MonoBehaviour {
 			lineRenderer.SetPosition (1, hit.point);
 		} else {
 			//NO HIT, REMOVE SECOND POINT OF LINE
+			Debug.Log("MISSED SHOT");
 			lineRenderer.SetPosition (1, this.transform.position);
 		}
 
