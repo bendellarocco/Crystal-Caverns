@@ -10,7 +10,8 @@ public class player : MonoBehaviour {
 	Transform myTrans, tagGround;
 	Rigidbody2D mybody;
 	Vector3 target;
-	float swingDirection;
+	public GameObject joint;
+
 	
 	public bool isGrounded = false;
 
@@ -24,7 +25,7 @@ public class player : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		target = transform.position;
-		isGrounded = Physics2D.Linecast (myTrans.position, tagGround.position, playerMask);
+		isGrounded = Physics2D.Linecast (myTrans.position, tagGround.position);
 
 		Move (Input.GetAxisRaw ("Horizontal"));
 		if (Input.GetButtonDown ("Jump")) {
@@ -43,6 +44,13 @@ public class player : MonoBehaviour {
 		if (isGrounded == true) {
 			mybody.velocity += jumpVelocity * Vector2.up;
 		}
+		if (grappleHook.isHooked == true && isGrounded == false) {
+			Destroy (joint.GetComponent<DistanceJoint2D>(), 0);
+			mybody.velocity += jumpVelocity * Vector2.up;
+			grappleHook.isHooked = false;
+
+		}
+	
 
 	}
 }
