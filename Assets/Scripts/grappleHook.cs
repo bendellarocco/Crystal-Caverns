@@ -3,10 +3,15 @@ using System.Collections;
 
 public class grappleHook : MonoBehaviour {
 
+	public GameObject joint;
+	public Transform jointTransform;
+	public Rigidbody2D player;
+
 	Vector3 target;
 	float swingDirection;
-	public float grappleVelocity = 20;
 	private LineRenderer lineRenderer;
+	public static bool isHooked = false;
+	private DistanceJoint2D distanceJoint;
 
 	// Use this for initialization
 	void Start () {
@@ -15,6 +20,8 @@ public class grappleHook : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		lineRenderer.SetPosition (0, this.transform.position);
 
 		if (Input.GetMouseButtonDown(0)) 
 		{
@@ -35,28 +42,41 @@ public class grappleHook : MonoBehaviour {
 			else {
 				swingDirection = 1;
 			}
-		transform.position = Vector3.MoveTowards(transform.position, target, grappleVelocity * Time.deltaTime);
+
 
 	}
 
 	public void newGrapple(){
-		//GET USERS MOUSE CLICK INPUT
-		target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-		target.z = transform.position.z;
 
-		//SEND OUT RAY TO CHECK FOR ANY HITS
-		RaycastHit2D hit = Physics2D.Linecast(transform.position, target);
-		if (hit.collider != null) {
-			Debug.Log (hit.point);
+		if (isHooked == false) {
 
-			//IF COLLISION DRAW LINE FROM PLAYER TO HIT LOCATION
-			lineRenderer.SetPosition (0, this.transform.position);
-			lineRenderer.SetPosition (1, hit.point);
-		} else {
-			//NO HIT, REMOVE SECOND POINT OF LINE
-			Debug.Log("MISSED SHOT");
-			lineRenderer.SetPosition (1, this.transform.position);
+			Destroy (distanceJoint);
+			//GET USERS MOUSE CLICK INPUT
+			target = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+			target.z = transform.position.z;
+
+			//SEND OUT RAY TO CHECK FOR ANY HITS
+			RaycastHit2D hit = Physics2D.Linecast (transform.position, target);
+			if (hit.collider != null) {
+				//IF COLLISION DRAW LINE FROM PLAYER TO HIT LOCATION
+				lineRenderer.SetPosition (1, hit.point);
+
+				//MOVE JOINT
+				jointTransform.position = new Vector3 (hit.point.x, hit.point.y, 0);
+
+				//CREATE DISTANCE JOINT
+				distanceJoint = joint.AddComponent<DistanceJoint2D> ();
+				distanceJoint.distance = 7;
+				distanceJoint.connectedBody = player;
+
+				isHooked = true;
+
+			} else {
+				//NO HIT, REMOVE SECOND POINT OF LINE
+				Debug.Log ("MISSED SHOT");
+				lineRenderer.SetPosition (1, this.transform.position);
+			}
+
 		}
-
 	}
 }
