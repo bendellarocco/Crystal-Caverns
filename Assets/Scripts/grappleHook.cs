@@ -3,9 +3,9 @@ using System.Collections;
 
 public class grappleHook : MonoBehaviour {
 
-	public GameObject joint;
+	public GameObject player;
 	public Transform jointTransform;
-	public Rigidbody2D player;
+	public Rigidbody2D joint;
 
 	Vector3 target;
 	float swingDirection;
@@ -47,6 +47,7 @@ public class grappleHook : MonoBehaviour {
 	}
 
 	public void newGrapple(){
+		Debug.Log (isHooked);
 
 		if (isHooked == false) {
 
@@ -65,9 +66,9 @@ public class grappleHook : MonoBehaviour {
 				jointTransform.position = new Vector3 (hit.point.x, hit.point.y, 0);
 
 				//CREATE DISTANCE JOINT
-				distanceJoint = joint.AddComponent<DistanceJoint2D> ();
+				distanceJoint = player.AddComponent<DistanceJoint2D> ();
 				distanceJoint.distance = 7;
-				distanceJoint.connectedBody = player;
+				distanceJoint.connectedBody = joint;
 
 				isHooked = true;
 

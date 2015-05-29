@@ -3,14 +3,14 @@ using System.Collections;
 
 public class player : MonoBehaviour {
 
-	public float speed = 20;
+	public float speed = 10;
 	public float jumpVelocity = 10;
-	public float grappleVelocity = 20;
+	public float releaseVelocity = 1;
 	public LayerMask playerMask;
 	Transform myTrans, tagGround;
 	Rigidbody2D mybody;
 	Vector3 target;
-	public GameObject joint;
+	public GameObject playerRid;
 
 	
 	public bool isGrounded = false;
@@ -46,8 +46,8 @@ public class player : MonoBehaviour {
 			mybody.velocity += jumpVelocity * Vector2.up;
 		}
 		if (grappleHook.isHooked == true && isGrounded == false) {
-			Destroy (joint.GetComponent<DistanceJoint2D>(), 0);
-			mybody.velocity += jumpVelocity * Vector2.up;
+			Destroy (playerRid.GetComponent<DistanceJoint2D>(), 0);
+			mybody.velocity += releaseVelocity * Vector2.up;
 			grappleHook.isHooked = false;
 
 		}
