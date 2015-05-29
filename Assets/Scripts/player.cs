@@ -38,6 +38,7 @@ public class player : MonoBehaviour {
 		Vector2 moveVelocity = mybody.velocity;
 		moveVelocity.x = horizontalInput * speed;
 		mybody.velocity = moveVelocity;
+
 	}
 
 	public void Jump() {
@@ -49,6 +50,7 @@ public class player : MonoBehaviour {
 			Destroy (playerRid.GetComponent<DistanceJoint2D>(), 0);
 			mybody.velocity += releaseVelocity * Vector2.up;
 			grappleHook.isHooked = false;
+
 
 		}
 	

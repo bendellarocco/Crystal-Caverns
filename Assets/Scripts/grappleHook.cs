@@ -9,7 +9,7 @@ public class grappleHook : MonoBehaviour {
 
 	Vector3 target;
 	float swingDirection;
-	private LineRenderer lineRenderer;
+	public LineRenderer lineRenderer;
 	public static bool isHooked = false;
 	private DistanceJoint2D distanceJoint;
 
@@ -21,29 +21,17 @@ public class grappleHook : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		//REMOVE LINE IF NOT HOOKED
+		if (isHooked == false) {
+			lineRenderer.SetPosition (1, this.transform.position);
+		}
+
 		lineRenderer.SetPosition (0, this.transform.position);
 
 		if (Input.GetMouseButtonDown(0)) 
 		{
 			newGrapple();
 		}
-	}
-
-	public void Grapple()
-	{
-
-			target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			target.z = transform.position.z;
-			
-			
-			if (transform.position.x > target.x) {
-				swingDirection = -1;
-			}
-			else {
-				swingDirection = 1;
-			}
-
-
 	}
 
 	public void newGrapple(){
