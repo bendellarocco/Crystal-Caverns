@@ -4,12 +4,11 @@ using System.Collections;
 public class player : MonoBehaviour {
 
 	public float speed = 7;
-	public float jumpVelocity = 10;
+	public float jumpVelocity = 7;
 	public float releaseVelocity = 1;
 	public LayerMask playerMask;
 	Transform myTrans, tagGround;
 	Rigidbody2D mybody;
-	Vector3 target;
 	public GameObject playerRid;
 
 	
@@ -24,7 +23,6 @@ public class player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		target = transform.position;
 		isGrounded = Physics2D.Linecast (myTrans.position, tagGround.position);
 
 		//MOVE IF MOVE KEYS DOWN
