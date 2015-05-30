@@ -3,7 +3,7 @@ using System.Collections;
 
 public class player : MonoBehaviour {
 
-	public float speed = 10;
+	public float speed = 7;
 	public float jumpVelocity = 10;
 	public float releaseVelocity = 1;
 	public LayerMask playerMask;
@@ -27,16 +27,32 @@ public class player : MonoBehaviour {
 		target = transform.position;
 		isGrounded = Physics2D.Linecast (myTrans.position, tagGround.position);
 
-		Move (Input.GetAxisRaw ("Horizontal"));
+		//MOVE IF MOVE KEYS DOWN
+		if (Input.GetButton ("Horizontal")) {
+			if (grappleHook.isHooked == false) {
+				Move (Input.GetAxisRaw ("Horizontal"), speed);
+				Debug.Log("MOVING");
+			}
+		}
+
+		//SWING
+		if (Input.GetButtonDown ("Horizontal")) {
+			if (grappleHook.isHooked == true) {
+				Move (Input.GetAxisRaw ("Horizontal"), speed);
+				Debug.Log("SWINGING");
+			}
+		}
+
+		//JUMP KEYS DOWN
 		if (Input.GetButtonDown ("Jump")) {
 			Jump ();
 		}
 
 	}
 		
-	public void Move(float horizontalInput){
+	public void Move(float horizontalInput, float momentum){
 		Vector2 moveVelocity = mybody.velocity;
-		moveVelocity.x = horizontalInput * speed;
+		moveVelocity.x = horizontalInput * momentum;
 		mybody.velocity = moveVelocity;
 
 	}

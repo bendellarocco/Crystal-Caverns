@@ -35,7 +35,6 @@ public class grappleHook : MonoBehaviour {
 	}
 
 	public void newGrapple(){
-		Debug.Log (isHooked);
 
 		if (isHooked == false) {
 
