@@ -24,21 +24,11 @@ public class player : MonoBehaviour {
 	void FixedUpdate () {
 		isGrounded = Physics2D.Linecast (myTrans.position, tagGround.position);
 
-		//MOVE IF MOVE KEYS DOWN
-		if (Input.GetButton ("Horizontal")) {
-			if (grappleHook.isHooked == false) {
-				Move (Input.GetAxisRaw ("Horizontal"), speed);
-				Debug.Log("MOVING");
-			}
+
+		if (Input.acceleration.x > .09 || Input.acceleration.x < -.09) {
+			Move ((Input.acceleration.x * 3), speed);
 		}
 
-		//SWING
-		if (Input.GetButtonDown ("Horizontal")) {
-			if (grappleHook.isHooked == true) {
-				Move (Input.GetAxisRaw ("Horizontal"), speed);
-				Debug.Log("SWINGING");
-			}
-		}
 
 		//JUMP KEYS DOWN
 		if (Input.GetButtonDown ("Jump")) {
@@ -48,9 +38,12 @@ public class player : MonoBehaviour {
 	}
 		
 	public void Move(float horizontalInput, float momentum){
-		Vector2 moveVelocity = mybody.velocity;
-		moveVelocity.x = horizontalInput * momentum;
-		mybody.velocity = moveVelocity;
+		if (grappleHook.isHooked == false) {
+			Vector2 moveVelocity = mybody.velocity;
+			moveVelocity.x = horizontalInput * momentum;
+			mybody.velocity = moveVelocity;
+			Debug.Log(moveVelocity.x);
+		}
 
 	}
 

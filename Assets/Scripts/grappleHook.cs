@@ -55,7 +55,6 @@ public class grappleHook : MonoBehaviour {
 					lineRenderer.SetPosition (1, hit.point);
 
 					grappleDistance = ((target.y - player.transform.position.y) - 1);
-					Debug.Log(grappleDistance);
 
 					//MOVE JOINT
 					jointTransform.position = new Vector3 (hit.point.x, hit.point.y, 0);
