@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 public class grappleHook : MonoBehaviour {
 
@@ -43,28 +44,32 @@ public class grappleHook : MonoBehaviour {
 			target = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 			target.z = transform.position.z;
 
+			//CHECKS IF CLICK IS OVER UI
+			if (!EventSystem.current.IsPointerOverGameObject()){
+
 			//SEND OUT RAY TO CHECK FOR ANY HITS
-			RaycastHit2D hit = Physics2D.Linecast (transform.position, target);
-			if (hit.collider != null) {
-				//IF COLLISION DRAW LINE FROM PLAYER TO HIT LOCATION
-				lineRenderer.SetPosition (1, hit.point);
+				RaycastHit2D hit = Physics2D.Linecast (transform.position, target);
+				if (hit.collider != null) {
+					//IF COLLISION DRAW LINE FROM PLAYER TO HIT LOCATION
+					lineRenderer.SetPosition (1, hit.point);
 
-				//MOVE JOINT
-				jointTransform.position = new Vector3 (hit.point.x, hit.point.y, 0);
+					//MOVE JOINT
+					jointTransform.position = new Vector3 (hit.point.x, hit.point.y, 0);
 
-				//CREATE DISTANCE JOINT
-				distanceJoint = player.AddComponent<DistanceJoint2D> ();
-				distanceJoint.distance = 7;
-				distanceJoint.connectedBody = joint;
+					//CREATE DISTANCE JOINT
+					distanceJoint = player.AddComponent<DistanceJoint2D> ();
+					distanceJoint.distance = 7;
+					distanceJoint.connectedBody = joint;
 
-				isHooked = true;
+					isHooked = true;
 
-			} else {
-				//NO HIT, REMOVE SECOND POINT OF LINE
-				Debug.Log ("MISSED SHOT");
-				lineRenderer.SetPosition (1, this.transform.position);
+				} else {
+					//NO HIT, REMOVE SECOND POINT OF LINE
+					Debug.Log ("MISSED SHOT");
+					lineRenderer.SetPosition (1, this.transform.position);
+				}
+
 			}
-
-		}
+			}
 	}
 }

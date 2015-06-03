@@ -6,7 +6,6 @@ public class player : MonoBehaviour {
 	public float speed = 7;
 	public float jumpVelocity = 7;
 	public float releaseVelocity = 1;
-	public LayerMask playerMask;
 	Transform myTrans, tagGround;
 	Rigidbody2D mybody;
 	public GameObject playerRid;
