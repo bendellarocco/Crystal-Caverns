@@ -10,6 +10,7 @@ public class grappleHook : MonoBehaviour {
 
 	Vector3 target;
 	float swingDirection;
+	float grappleDistance;
 	public LineRenderer lineRenderer;
 	public static bool isHooked = false;
 	private DistanceJoint2D distanceJoint;
@@ -53,12 +54,15 @@ public class grappleHook : MonoBehaviour {
 					//IF COLLISION DRAW LINE FROM PLAYER TO HIT LOCATION
 					lineRenderer.SetPosition (1, hit.point);
 
+					grappleDistance = ((target.y - player.transform.position.y) - 1);
+					Debug.Log(grappleDistance);
+
 					//MOVE JOINT
 					jointTransform.position = new Vector3 (hit.point.x, hit.point.y, 0);
 
 					//CREATE DISTANCE JOINT
 					distanceJoint = player.AddComponent<DistanceJoint2D> ();
-					distanceJoint.distance = 7;
+					distanceJoint.distance = grappleDistance;
 					distanceJoint.connectedBody = joint;
 
 					isHooked = true;
@@ -70,6 +74,6 @@ public class grappleHook : MonoBehaviour {
 				}
 
 			}
-			}
+		}
 	}
 }

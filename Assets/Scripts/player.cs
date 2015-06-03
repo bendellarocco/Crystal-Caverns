@@ -60,13 +60,13 @@ public class player : MonoBehaviour {
 			mybody.velocity += jumpVelocity * Vector2.up;
 		}
 		if (grappleHook.isHooked == true && isGrounded == false) {
-			Destroy (playerRid.GetComponent<DistanceJoint2D>(), 0);
-			mybody.velocity += releaseVelocity * Vector2.up;
-			grappleHook.isHooked = false;
-
-
+			Release ();
 		}
-	
+	}
 
+	public void Release() {
+		Destroy (playerRid.GetComponent<DistanceJoint2D>(), 0);
+		mybody.velocity += releaseVelocity * Vector2.up;
+		grappleHook.isHooked = false;
 	}
 }
