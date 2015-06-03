@@ -26,7 +26,7 @@ public class player : MonoBehaviour {
 
 
 		if (Input.acceleration.x > .09 || Input.acceleration.x < -.09) {
-			Move ((Input.acceleration.x * 3), speed);
+			Move ((Input.acceleration), speed);
 		}
 
 
@@ -37,12 +37,17 @@ public class player : MonoBehaviour {
 
 	}
 		
-	public void Move(float horizontalInput, float momentum){
+	public void Move(Vector2 horizontalInput, float momentum){
 		if (grappleHook.isHooked == false) {
 			Vector2 moveVelocity = mybody.velocity;
-			moveVelocity.x = horizontalInput * momentum;
-			mybody.velocity = moveVelocity;
-			Debug.Log(moveVelocity.x);
+			//NORMALIZE INPUT SO ITS LESS TWITCHY
+			horizontalInput.Normalize();
+
+			//MULTIPLY BY DELTATIME SO IT MOVES PER SECOND NOT PER FRAME
+			horizontalInput *= Time.deltaTime;
+
+			transform.Translate((horizontalInput.x * 12), 0, 0);
+			Debug.Log(horizontalInput.x * 12);
 		}
 
 	}
