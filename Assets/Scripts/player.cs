@@ -57,7 +57,7 @@ public class player : MonoBehaviour {
 		if (isGrounded == true && grappleHook.isHooked == false) {
 			mybody.velocity += jumpVelocity * Vector2.up;
 		}
-		if (grappleHook.isHooked == true && isGrounded == false) {
+		if (grappleHook.isHooked == true) {
 			Release ();
 		}
 	}
