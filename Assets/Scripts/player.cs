@@ -24,11 +24,13 @@ public class player : MonoBehaviour {
 	void FixedUpdate () {
 		isGrounded = Physics2D.Linecast (myTrans.position, tagGround.position);
 
-
 		if (Input.acceleration.x > .09 || Input.acceleration.x < -.09) {
-			Move ((Input.acceleration), speed);
+			if (grappleHook.isHooked == false) {
+				Move ((Input.acceleration), speed);
+			}else {
+					Swing ((Input.acceleration), speed);
+			}
 		}
-
 
 		//JUMP KEYS DOWN
 		if (Input.GetButtonDown ("Jump")) {
@@ -38,18 +40,17 @@ public class player : MonoBehaviour {
 	}
 		
 	public void Move(Vector2 horizontalInput, float momentum){
-		if (grappleHook.isHooked == false) {
-			Vector2 moveVelocity = mybody.velocity;
 			//NORMALIZE INPUT SO ITS LESS TWITCHY
 			horizontalInput.Normalize();
 
 			//MULTIPLY BY DELTATIME SO IT MOVES PER SECOND NOT PER FRAME
 			horizontalInput *= Time.deltaTime;
-
 			transform.Translate((horizontalInput.x * 12), 0, 0);
-			Debug.Log(horizontalInput.x * 12);
-		}
+	
+	}
 
+	public void Swing(Vector2 horizontalInput, float momentum){
+			mybody.AddForce(transform.right * horizontalInput.x * 2);
 	}
 
 	public void Jump() {

@@ -54,7 +54,7 @@ public class grappleHook : MonoBehaviour {
 					//IF COLLISION DRAW LINE FROM PLAYER TO HIT LOCATION
 					lineRenderer.SetPosition (1, hit.point);
 
-					grappleDistance = ((target.y - player.transform.position.y) - 1);
+					grappleDistance = ((target.y - player.transform.position.y) - 2);
 
 					//MOVE JOINT
 					jointTransform.position = new Vector3 (hit.point.x, hit.point.y, 0);
