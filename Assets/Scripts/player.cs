@@ -9,8 +9,6 @@ public class player : MonoBehaviour {
 	Transform myTrans, tagGround;
 	Rigidbody2D mybody;
 	public GameObject playerRid;
-
-	
 	public bool isGrounded = false;
 
 	// Use this for initialization
@@ -24,13 +22,16 @@ public class player : MonoBehaviour {
 	void FixedUpdate () {
 		isGrounded = Physics2D.Linecast (myTrans.position, tagGround.position);
 
+		//MOVE/SWING
 		if (Input.acceleration.x > .09 || Input.acceleration.x < -.09) {
-			if (grappleHook.isHooked == false) {
-				Move ((Input.acceleration), speed);
-			}else {
+				if (grappleHook.isHooked == false) {
+					Move ((Input.acceleration), speed);
+				}else {
 					Swing ((Input.acceleration), speed);
-			}
+				}
+
 		}
+
 
 		//JUMP KEYS DOWN
 		if (Input.GetButtonDown ("Jump")) {
@@ -54,12 +55,13 @@ public class player : MonoBehaviour {
 	}
 
 	public void Jump() {
-
-		if (isGrounded == true && grappleHook.isHooked == false) {
+		if ((isGrounded == true  || stickyWall.wallStuck == true) && grappleHook.isHooked == false) {
+			mybody.drag = 0;
 			mybody.velocity += jumpVelocity * Vector2.up;
-		}
-		if (grappleHook.isHooked == true) {
-			Release ();
+		}else{
+			if (grappleHook.isHooked == true) {
+				Release ();
+			}
 		}
 	}
 
