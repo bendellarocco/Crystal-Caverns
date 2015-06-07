@@ -10,6 +10,7 @@ public class player : MonoBehaviour {
 	Rigidbody2D mybody;
 	public GameObject playerRid;
 	public bool isGrounded = false;
+	public static bool wallJumped = false;
 
 	// Use this for initialization
 	void Start () {
@@ -55,12 +56,21 @@ public class player : MonoBehaviour {
 	}
 
 	public void Jump() {
-		if ((isGrounded == true  || stickyWall.wallStuck == true) && grappleHook.isHooked == false) {
-			mybody.drag = 0;
+		if (isGrounded == true && grappleHook.isHooked == false) {
 			mybody.velocity += jumpVelocity * Vector2.up;
-		}else{
+		} else {
 			if (grappleHook.isHooked == true) {
 				Release ();
+			} else {
+				if (stickyWall.wallStuck == true) {
+					if (wallJumped == false) {
+						Debug.Log("step 2");
+						mybody.drag = 0;
+						mybody.velocity += jumpVelocity * Vector2.up;
+						wallJumped = true;
+
+					}
+				}
 			}
 		}
 	}

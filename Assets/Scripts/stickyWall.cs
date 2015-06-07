@@ -17,8 +17,15 @@ public class stickyWall : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D collide){
 		if (collide.gameObject.tag == "Player") {
-			collide.rigidbody.drag = 15;
-			wallStuck = true;
+			if (player.wallJumped == true)
+			{
+				collide.rigidbody.drag = 0;
+			}else {
+				collide.rigidbody.drag = 15;
+				wallStuck = true;
+				player.wallJumped = false;
+
+			}
 
 		}
 	}
@@ -27,6 +34,7 @@ public class stickyWall : MonoBehaviour {
 		if (collide.gameObject.tag == "Player") {
 			wallStuck = false;
 			collide.rigidbody.drag = 0;
+			player.wallJumped = false;
 
 			
 		}
