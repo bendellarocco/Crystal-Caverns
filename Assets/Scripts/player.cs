@@ -22,23 +22,21 @@ public class player : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		isGrounded = Physics2D.Linecast (myTrans.position, tagGround.position);
+		Debug.Log (mybody.velocity.x);
 
 		//MOVE/SWING
 		if (Input.acceleration.x > .09 || Input.acceleration.x < -.09) {
 				if (grappleHook.isHooked == false) {
 					Move ((Input.acceleration), speed);
 				}else {
-					Swing ((Input.acceleration), speed);
+					Swing ((Input.acceleration), 2);
 				}
-
 		}
-
 
 		//JUMP KEYS DOWN
 		if (Input.GetButtonDown ("Jump")) {
 			Jump ();
 		}
-
 	}
 		
 	public void Move(Vector2 horizontalInput, float momentum){
@@ -47,15 +45,16 @@ public class player : MonoBehaviour {
 
 			//MULTIPLY BY DELTATIME SO IT MOVES PER SECOND NOT PER FRAME
 			horizontalInput *= Time.deltaTime;
-			transform.Translate((horizontalInput.x * 12), 0, 0);
-	
+			transform.Translate((horizontalInput.x * momentum), 0, 0);
 	}
 
 	public void Swing(Vector2 horizontalInput, float momentum){
-			mybody.AddForce(transform.right * horizontalInput.x * 2);
+			mybody.AddForce(transform.right * horizontalInput.x * momentum);
 	}
 
 	public void Jump() {
+
+		//CORRECT JUMP ALGORITH.  CHECKS IF PLAYER IS ON THE GROUND/HOOKED/OR STUCK TO WALL
 		if (isGrounded == true && grappleHook.isHooked == false) {
 			mybody.velocity += jumpVelocity * Vector2.up;
 		} else {
@@ -64,11 +63,9 @@ public class player : MonoBehaviour {
 			} else {
 				if (stickyWall.wallStuck == true) {
 					if (wallJumped == false) {
-						Debug.Log("step 2");
 						mybody.drag = 0;
 						mybody.velocity += jumpVelocity * Vector2.up;
 						wallJumped = true;
-
 					}
 				}
 			}

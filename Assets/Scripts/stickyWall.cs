@@ -17,15 +17,15 @@ public class stickyWall : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D collide){
 		if (collide.gameObject.tag == "Player") {
-			if (player.wallJumped == true)
-			{
-				collide.rigidbody.drag = 0;
-			}else {
 				collide.rigidbody.drag = 15;
 				wallStuck = true;
 				player.wallJumped = false;
-
+			if (grappleHook.isHooked == true) {
+				grappleHook.isHooked = false;
+				Destroy(collide.rigidbody.GetComponent<DistanceJoint2D>(), 0);
 			}
+
+
 
 		}
 	}
