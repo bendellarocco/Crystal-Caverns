@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 public class grappleHook : MonoBehaviour {
 
-	public GameObject player;
+	public GameObject playerGo;
 	public Transform jointTransform;
 	public Rigidbody2D joint;
 
@@ -46,26 +46,26 @@ public class grappleHook : MonoBehaviour {
 			target.z = transform.position.z;
 
 			//CHECKS IF CLICK IS OVER UI
-			if (!EventSystem.current.IsPointerOverGameObject()){
+			if (!EventSystem.current.IsPointerOverGameObject ()) {
 
-			//SEND OUT RAY TO CHECK FOR ANY HITS
+				//SEND OUT RAY TO CHECK FOR ANY HITS
 				RaycastHit2D hit = Physics2D.Linecast (transform.position, target);
 				if (hit.collider != null) {
 					//IF COLLISION DRAW LINE FROM PLAYER TO HIT LOCATION
 					lineRenderer.SetPosition (1, hit.point);
 
 					//DETERMINE IF GRABBLE DISTANCE IS A CEILING
-					if (hit.collider.tag == "sticky_wall"){
+					if (hit.collider.tag == "sticky_wall") {
 						grappleDistance = 1;
-					}else {
-						grappleDistance = ((target.y - player.transform.position.y) - 2);
+					} else {
+						grappleDistance = ((target.y - playerGo.transform.position.y) - 2);
 					}
 
 					//MOVE JOINT
 					jointTransform.position = new Vector3 (hit.point.x, hit.point.y, 0);
 
 					//CREATE DISTANCE JOINT
-					distanceJoint = player.AddComponent<DistanceJoint2D> ();
+					distanceJoint = playerGo.AddComponent<DistanceJoint2D> ();
 					distanceJoint.distance = grappleDistance;
 					distanceJoint.connectedBody = joint;
 
@@ -73,11 +73,14 @@ public class grappleHook : MonoBehaviour {
 
 				} else {
 					//NO HIT, REMOVE SECOND POINT OF LINE
-
+					player.Release ();
 					lineRenderer.SetPosition (1, this.transform.position);
 				}
 
 			}
+
+		} else {
+			player.Release ();
 		}
 	}
 }

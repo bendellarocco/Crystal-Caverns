@@ -5,12 +5,12 @@ public class player : MonoBehaviour {
 
 	public float speed = 7;
 	public float jumpVelocity = 7;
-	public float releaseVelocity = 1;
+	public static float releaseVelocity = 1;
 	Transform myTrans, tagGround;
-	Rigidbody2D mybody;
-	public GameObject playerRid;
+	public static Rigidbody2D mybody;
 	public bool isGrounded = false;
 	public static bool wallJumped = false;
+	int touchCount;
 
 	// Use this for initialization
 	void Start () {
@@ -30,11 +30,6 @@ public class player : MonoBehaviour {
 				}else {
 					Swing ((Input.acceleration), 2);
 				}
-		}
-
-		//JUMP KEYS DOWN
-		if (Input.GetButtonDown ("Jump")) {
-			Jump ();
 		}
 	}
 		
@@ -57,9 +52,7 @@ public class player : MonoBehaviour {
 		if (isGrounded == true && grappleHook.isHooked == false) {
 			mybody.velocity += jumpVelocity * Vector2.up;
 		} else {
-			if (grappleHook.isHooked == true) {
-				Release ();
-			} else {
+
 				if (stickyWall.wallStuck == true) {
 					if (wallJumped == false) {
 						mybody.drag = 0;
@@ -68,11 +61,10 @@ public class player : MonoBehaviour {
 				}
 			}
 		}
-	}
 
-	public void Release() {
-		Destroy (playerRid.GetComponent<DistanceJoint2D>(), 0);
-		mybody.velocity += releaseVelocity * Vector2.up;
+	public static void Release() {
+		Destroy (mybody.GetComponent<DistanceJoint2D>(), 0);
+		//mybody.velocity += releaseVelocity * Vector2.up;
 		grappleHook.isHooked = false;
 	}
 }
