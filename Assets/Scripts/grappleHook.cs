@@ -54,7 +54,12 @@ public class grappleHook : MonoBehaviour {
 					//IF COLLISION DRAW LINE FROM PLAYER TO HIT LOCATION
 					lineRenderer.SetPosition (1, hit.point);
 
-					grappleDistance = ((target.y - player.transform.position.y) - 2);
+					//DETERMINE IF GRABBLE DISTANCE IS A CEILING
+					if (hit.collider.tag == "sticky_wall"){
+						grappleDistance = 1;
+					}else {
+						grappleDistance = ((target.y - player.transform.position.y) - 2);
+					}
 
 					//MOVE JOINT
 					jointTransform.position = new Vector3 (hit.point.x, hit.point.y, 0);
@@ -68,7 +73,7 @@ public class grappleHook : MonoBehaviour {
 
 				} else {
 					//NO HIT, REMOVE SECOND POINT OF LINE
-					Debug.Log ("MISSED SHOT");
+
 					lineRenderer.SetPosition (1, this.transform.position);
 				}
 

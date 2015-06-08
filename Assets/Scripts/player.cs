@@ -22,7 +22,6 @@ public class player : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		isGrounded = Physics2D.Linecast (myTrans.position, tagGround.position);
-		Debug.Log (mybody.velocity.x);
 
 		//MOVE/SWING
 		if (Input.acceleration.x > .09 || Input.acceleration.x < -.09) {
@@ -64,7 +63,6 @@ public class player : MonoBehaviour {
 				if (stickyWall.wallStuck == true) {
 					if (wallJumped == false) {
 						mybody.drag = 0;
-						mybody.velocity += jumpVelocity * Vector2.up;
 						wallJumped = true;
 					}
 				}
