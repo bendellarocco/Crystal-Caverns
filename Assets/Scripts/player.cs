@@ -3,14 +3,13 @@ using System.Collections;
 
 public class player : MonoBehaviour {
 
-	public float speed = 7;
-	public float jumpVelocity = 7;
-	public static float releaseVelocity = 1;
+	float speed = 20;
+	float jumpVelocity = 7;
+	float swingVelocity = 3;
 	Transform myTrans, tagGround;
 	public static Rigidbody2D mybody;
-	public bool isGrounded = false;
+	bool isGrounded = false;
 	public static bool wallJumped = false;
-	int touchCount;
 
 	// Use this for initialization
 	void Start () {
@@ -28,18 +27,28 @@ public class player : MonoBehaviour {
 				if (grappleHook.isHooked == false) {
 					Move ((Input.acceleration), speed);
 				}else {
-					Swing ((Input.acceleration), 2);
+					Swing ((Input.acceleration), swingVelocity);
 				}
 		}
 	}
 		
 	public void Move(Vector2 horizontalInput, float momentum){
-			//NORMALIZE INPUT SO ITS LESS TWITCHY
-			horizontalInput.Normalize();
+		//NORMALIZE INPUT SO ITS LESS TWITCHY
+		horizontalInput.Normalize();
 
-			//MULTIPLY BY DELTATIME SO IT MOVES PER SECOND NOT PER FRAME
-			horizontalInput *= Time.deltaTime;
-			transform.Translate((horizontalInput.x * momentum), 0, 0);
+		//MULTIPLY BY DELTATIME SO IT MOVES PER SECOND NOT PER FRAME
+		horizontalInput *= Time.deltaTime;
+		horizontalInput *= momentum;
+
+		if (horizontalInput.x > .11){
+			horizontalInput.x = .11f;
+		}else {
+			if (horizontalInput.x < -.11) {
+				horizontalInput.x = -.11f;
+			}
+		}
+		Debug.Log (horizontalInput.x);
+		transform.Translate((horizontalInput.x), 0, 0);
 	}
 
 	public void Swing(Vector2 horizontalInput, float momentum){
@@ -64,7 +73,6 @@ public class player : MonoBehaviour {
 
 	public static void Release() {
 		Destroy (mybody.GetComponent<DistanceJoint2D>(), 0);
-		//mybody.velocity += releaseVelocity * Vector2.up;
 		grappleHook.isHooked = false;
 	}
 }
