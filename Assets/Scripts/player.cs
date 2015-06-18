@@ -21,6 +21,10 @@ public class player : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		isGrounded = Physics2D.Linecast (myTrans.position, tagGround.position);
+		Debug.Log (mybody.velocity.y);
+		if (mybody.velocity.y < -17) {
+			Debug.Log ("DEAD");
+		}
 
 		//MOVE/SWING
 		if (Input.acceleration.x > .09 || Input.acceleration.x < -.09) {
@@ -47,7 +51,6 @@ public class player : MonoBehaviour {
 				horizontalInput.x = -.11f;
 			}
 		}
-		Debug.Log (horizontalInput.x);
 		transform.Translate((horizontalInput.x), 0, 0);
 	}
 
