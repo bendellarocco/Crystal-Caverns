@@ -14,7 +14,7 @@ public class grappleHook : MonoBehaviour {
 	public LineRenderer lineRenderer;
 	public static bool isHooked = false;
 	private DistanceJoint2D distanceJoint;
-	float maxGrapple = 15;
+	float maxGrapple;
 
 	// Use this for initialization
 	void Start () {
@@ -59,7 +59,7 @@ public class grappleHook : MonoBehaviour {
 					grappleDistance = target.y - playerGo.transform.position.y;
 
 
-					if (maxGrapple < 17 && maxGrapple > -17) {
+					if (maxGrapple < 15 && maxGrapple > -15) {
 						//IF COLLISION DRAW LINE FROM PLAYER TO HIT LOCATION
 						lineRenderer.SetPosition (1, hit.point);
 
