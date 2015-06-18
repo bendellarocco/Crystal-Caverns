@@ -14,6 +14,7 @@ public class grappleHook : MonoBehaviour {
 	public LineRenderer lineRenderer;
 	public static bool isHooked = false;
 	private DistanceJoint2D distanceJoint;
+	float maxGrapple = 15;
 
 	// Use this for initialization
 	void Start () {
@@ -28,6 +29,7 @@ public class grappleHook : MonoBehaviour {
 			lineRenderer.SetPosition (1, this.transform.position);
 		}
 
+		//KEEP LINE ON PLAYER **THIS IS PROBABLY NOT THE BEST WAY TO DO THIS**
 		lineRenderer.SetPosition (0, this.transform.position);
 
 		if (Input.GetMouseButtonDown(0)) 
@@ -51,26 +53,36 @@ public class grappleHook : MonoBehaviour {
 				//SEND OUT RAY TO CHECK FOR ANY HITS
 				RaycastHit2D hit = Physics2D.Linecast (transform.position, target);
 				if (hit.collider != null) {
-					//IF COLLISION DRAW LINE FROM PLAYER TO HIT LOCATION
-					lineRenderer.SetPosition (1, hit.point);
 
-					//DETERMINE IF GRABBLE DISTANCE IS A CEILING
-					if (hit.collider.tag == "sticky_wall") {
-						grappleDistance = 1;
+					//TEST IF GRAPPLE IS OVER MAX ALLOWED DISTANCE
+					maxGrapple = target.x - playerGo.transform.position.x;
+					grappleDistance = target.y - playerGo.transform.position.y;
+
+
+					if (maxGrapple < 17 && maxGrapple > -17) {
+						//IF COLLISION DRAW LINE FROM PLAYER TO HIT LOCATION
+						lineRenderer.SetPosition (1, hit.point);
+
+						//DETERMINE IF GRABBLE DISTANCE IS A CEILING
+						if (hit.collider.tag == "sticky_wall") {
+							grappleDistance = 1;
+						} else {
+							grappleDistance = (grappleDistance - 2);
+						}
+
+						//MOVE JOINT
+						jointTransform.position = new Vector3 (hit.point.x, hit.point.y, 0);
+
+						//CREATE DISTANCE JOINT
+						distanceJoint = playerGo.AddComponent<DistanceJoint2D> ();
+						distanceJoint.distance = grappleDistance;
+						distanceJoint.connectedBody = joint;
+
+						isHooked = true;
+
 					} else {
-						grappleDistance = ((target.y - playerGo.transform.position.y) - 2);
+						Debug.Log("TOO LONG");
 					}
-
-					//MOVE JOINT
-					jointTransform.position = new Vector3 (hit.point.x, hit.point.y, 0);
-
-					//CREATE DISTANCE JOINT
-					distanceJoint = playerGo.AddComponent<DistanceJoint2D> ();
-					distanceJoint.distance = grappleDistance;
-					distanceJoint.connectedBody = joint;
-
-					isHooked = true;
-
 				} else {
 					//NO HIT, REMOVE SECOND POINT OF LINE
 					player.Release ();
