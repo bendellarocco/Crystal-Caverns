@@ -4,13 +4,11 @@ using System.Collections;
 public class stickyWall : MonoBehaviour {
 
 	public static bool wallStuck = false;
-
-	// Use this for initialization
+	
 	void Start () {
 	
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 	
 	}
@@ -24,9 +22,6 @@ public class stickyWall : MonoBehaviour {
 				grappleHook.isHooked = false;
 				Destroy(collide.rigidbody.GetComponent<DistanceJoint2D>(), 0);
 			}
-
-
-
 		}
 	}
 
@@ -35,8 +30,6 @@ public class stickyWall : MonoBehaviour {
 			wallStuck = false;
 			collide.rigidbody.drag = 0;
 			player.wallJumped = false;
-
-			
 		}
 	}
 

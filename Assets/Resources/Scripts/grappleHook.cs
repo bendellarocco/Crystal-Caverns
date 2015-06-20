@@ -7,21 +7,17 @@ public class grappleHook : MonoBehaviour {
 	public GameObject playerGo;
 	public Transform jointTransform;
 	public Rigidbody2D joint;
-
 	Vector3 target;
-	float swingDirection;
 	float grappleDistance;
 	public LineRenderer lineRenderer;
 	public static bool isHooked = false;
 	private DistanceJoint2D distanceJoint;
 	float maxGrapple;
-
-	// Use this for initialization
+	
 	void Start () {
 		lineRenderer = this.GetComponent<LineRenderer>();
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 
 		//REMOVE LINE IF NOT HOOKED
@@ -32,13 +28,13 @@ public class grappleHook : MonoBehaviour {
 		//KEEP LINE ON PLAYER **THIS IS PROBABLY NOT THE BEST WAY TO DO THIS**
 		lineRenderer.SetPosition (0, this.transform.position);
 
-		if (Input.GetMouseButtonDown(0)) 
+		if (Input.GetMouseButtonDown(0))
 		{
-			newGrapple();
+			grapple();
 		}
 	}
 
-	public void newGrapple(){
+	public void grapple(){
 
 		if (isHooked == false) {
 

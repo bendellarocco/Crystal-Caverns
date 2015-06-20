@@ -10,15 +10,13 @@ public class player : MonoBehaviour {
 	public static Rigidbody2D mybody;
 	bool isGrounded = false;
 	public static bool wallJumped = false;
-
-	// Use this for initialization
+	
 	void Start () {
 		mybody = this.GetComponent<Rigidbody2D>();
 		myTrans = this.transform;
 		tagGround = GameObject.Find(this.name + "/tag_ground").transform;
 	}
-	
-	// Update is called once per frame
+
 	void FixedUpdate () {
 		isGrounded = Physics2D.Linecast (myTrans.position, tagGround.position);
 		if (mybody.velocity.y < -17) {
@@ -43,6 +41,8 @@ public class player : MonoBehaviour {
 		horizontalInput *= Time.deltaTime;
 		horizontalInput *= momentum;
 
+
+		//SLOW DOWN INPUT IF ITS TOO HIGH
 		if (horizontalInput.x > .11){
 			horizontalInput.x = .11f;
 		}else {
@@ -50,6 +50,7 @@ public class player : MonoBehaviour {
 				horizontalInput.x = -.11f;
 			}
 		}
+		//MOVE PLAYER
 		transform.Translate((horizontalInput.x), 0, 0);
 	}
 
@@ -63,7 +64,6 @@ public class player : MonoBehaviour {
 		if (isGrounded == true && grappleHook.isHooked == false) {
 			mybody.velocity += jumpVelocity * Vector2.up;
 		} else {
-
 				if (stickyWall.wallStuck == true) {
 					if (wallJumped == false) {
 						mybody.drag = 0;
