@@ -23,6 +23,35 @@ public class grappleHook : MonoBehaviour {
 		//REMOVE LINE IF NOT HOOKED
 		if (isHooked == false) {
 			lineRenderer.SetPosition (1, this.transform.position);
+		} else {
+			Vector2 start;
+			Vector2 end;
+			start.x = transform.position.x;
+			end.x = joint.position.x;
+			start.y = transform.position.y;
+
+			if (target.y > transform.position.y){
+				end.y = joint.position.y - .5f;
+				if(end.x > start.x){
+					end.x = end.x - .1f;
+				}else{
+					end.x = end.x + .1f;
+				}
+
+			}else {
+				end.y = target.y + .5f;
+				if(end.x > start.x){
+					end.x = end.x - .1f;
+				}else{
+					end.x = end.x + .1f;
+				}
+			}
+
+				RaycastHit2D swingCollide = Physics2D.Linecast (start, end);
+				if (swingCollide.collider != null) {
+				player.Release();
+				isHooked = false;
+			}
 		}
 
 		//KEEP LINE ON PLAYER **THIS IS PROBABLY NOT THE BEST WAY TO DO THIS**
