@@ -13,9 +13,11 @@ public class grappleHook : MonoBehaviour {
 	public static bool isHooked = false;
 	private DistanceJoint2D distanceJoint;
 	float maxGrapple;
+	int mask = 1 << 9;
 	
 	void Start () {
 		lineRenderer = this.GetComponent<LineRenderer>();
+		mask = ~mask;
 	}
 
 	void Update () {
@@ -47,7 +49,7 @@ public class grappleHook : MonoBehaviour {
 				}
 			}
 
-				RaycastHit2D swingCollide = Physics2D.Linecast (start, end);
+				RaycastHit2D swingCollide = Physics2D.Linecast (start, end, mask);
 				if (swingCollide.collider != null) {
 				player.Release();
 				isHooked = false;
@@ -76,7 +78,7 @@ public class grappleHook : MonoBehaviour {
 			if (!EventSystem.current.IsPointerOverGameObject ()) {
 
 				//SEND OUT RAY TO CHECK FOR ANY HITS
-				RaycastHit2D hit = Physics2D.Linecast (transform.position, target);
+				RaycastHit2D hit = Physics2D.Linecast (transform.position, target, mask);
 				if (hit.collider != null) {
 
 					//TEST IF GRAPPLE IS OVER MAX ALLOWED DISTANCE

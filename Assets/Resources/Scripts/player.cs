@@ -10,15 +10,20 @@ public class player : MonoBehaviour {
 	public static Rigidbody2D mybody;
 	bool isGrounded = false;
 	public static bool wallJumped = false;
+	int mask = 1 << 9;
 	
 	void Start () {
+		mask = ~mask;
 		mybody = this.GetComponent<Rigidbody2D>();
 		myTrans = this.transform;
 		tagGround = GameObject.Find(this.name + "/tag_ground").transform;
 	}
 
 	void FixedUpdate () {
-		isGrounded = Physics2D.Linecast (myTrans.position, tagGround.position);
+		isGrounded = Physics2D.Linecast (myTrans.position, tagGround.position, mask);
+		Debug.Log (isGrounded);
+
+		//TEST IF YOURE FALLING TOO FAST YOU DIE
 		if (mybody.velocity.y < -17) {
 			Debug.Log ("DEAD");
 		}
