@@ -21,7 +21,6 @@ public class player : MonoBehaviour {
 
 	void FixedUpdate () {
 		isGrounded = Physics2D.Linecast (myTrans.position, tagGround.position, mask);
-		Debug.Log (isGrounded);
 
 		//TEST IF YOURE FALLING TOO FAST YOU DIE
 		if (mybody.velocity.y < -17) {
@@ -30,7 +29,7 @@ public class player : MonoBehaviour {
 
 		//MOVE/SWING
 		if (Input.acceleration.x > .09 || Input.acceleration.x < -.09) {
-				if (grappleHook.isHooked == false) {
+			if (grappleHook.isHooked == false || grappleHook.interacting == true) {
 					Move ((Input.acceleration), speed);
 				}else {
 					Swing ((Input.acceleration), swingVelocity);
@@ -79,7 +78,9 @@ public class player : MonoBehaviour {
 		}
 
 	public static void Release() {
+		Destroy (mybody.GetComponent<SpringJoint2D>(), 0);
 		Destroy (mybody.GetComponent<DistanceJoint2D>(), 0);
 		grappleHook.isHooked = false;
+		grappleHook.interacting = false;
 	}
 }
