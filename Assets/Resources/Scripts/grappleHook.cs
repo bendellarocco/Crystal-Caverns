@@ -15,7 +15,6 @@ public class grappleHook : MonoBehaviour {
 	public static bool isHooked = false;
 	public static bool interacting = false;
 	private DistanceJoint2D distanceJoint;
-	private DistanceJoint2D springJoint;
 	float maxGrapple;
 	int mask = 1 << 9;
 	
@@ -62,9 +61,9 @@ public class grappleHook : MonoBehaviour {
 
 			if (interacting == true){
 				//IF YOU ARE CONNECTED TO AN INTERACTABLE OBJECT
-				jointTransform.position = new Vector3(springJoint.connectedBody.position.x + (center.x / 2), springJoint.connectedBody.position.y+ (center.y / 2), 0);
+				jointTransform.position = new Vector3(distanceJoint.connectedBody.position.x + (center.x / 2), distanceJoint.connectedBody.position.y+ (center.y / 2), 0);
 				lineRenderer.SetPosition (1, joint.transform.position);
-				float newDistance = Mathf.Round((playerGo.transform.position.x - springJoint.connectedBody.position.x));
+				float newDistance = Mathf.Round((playerGo.transform.position.x - distanceJoint.connectedBody.position.x));
 
 				//IF YOU GO SHORTER YOU ARE DISSCONNECTED
 				if(newDistance > originalDistance){
@@ -111,18 +110,18 @@ public class grappleHook : MonoBehaviour {
 						if (hit.collider.tag == "interact_level"){
 							//IF COLLISION IS AN INTERACTABLE OBJECT
 							interacting = true;
-							springJoint = playerGo.AddComponent<DistanceJoint2D>();
-							springJoint.connectedBody = hit.collider.attachedRigidbody;
-							originalDistance = Mathf.Round((playerGo.transform.position.x - springJoint.connectedBody.position.x));
+							distanceJoint = playerGo.AddComponent<DistanceJoint2D>();
+							distanceJoint.connectedBody = hit.collider.attachedRigidbody;
+							originalDistance = Mathf.Round((playerGo.transform.position.x - distanceJoint.connectedBody.position.x));
 
 							if (target.x - playerGo.transform.position.x > 0) {
-								springJoint.distance = target.x - playerGo.transform.position.x;
+								distanceJoint.distance = target.x - playerGo.transform.position.x;
 							}else {
-								springJoint.distance = (target.x - playerGo.transform.position.x) * -1;
+								distanceJoint.distance = (target.x - playerGo.transform.position.x) * -1;
 								originalDistance = originalDistance * -1;
 							}
 							center = hit.collider.bounds.size;
-							springJoint.maxDistanceOnly = true;
+							distanceJoint.maxDistanceOnly = true;
 							isHooked = true;
 						}else {
 							//DETERMINE IF GRABBLE DISTANCE IS A CEILING
@@ -152,7 +151,6 @@ public class grappleHook : MonoBehaviour {
 					player.Release ();
 					lineRenderer.SetPosition (1, this.transform.position);
 				}
-
 			}
 
 		} else {
