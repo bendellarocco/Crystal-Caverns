@@ -17,10 +17,10 @@ public class lever : MonoBehaviour {
 
 	void activate(){
 		if (active == false) {
-			interactTarget.transform.Rotate(0,0,45);
+			interactTarget.transform.Rotate(0,0,90);
 			active = true;
 		} else {
-			interactTarget.transform.Rotate(0,0,-45);
+			interactTarget.transform.Rotate(0,0,-90);
 			active = false;
 		}
 
