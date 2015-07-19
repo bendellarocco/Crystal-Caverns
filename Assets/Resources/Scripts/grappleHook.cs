@@ -54,13 +54,16 @@ public class grappleHook : MonoBehaviour {
 			}
 
 				RaycastHit2D swingCollide = Physics2D.Linecast (start, end, mask);
-				if (swingCollide.collider != null  && swingCollide.collider.tag != "interact_level") {
+				if (swingCollide.collider != null  && swingCollide.collider.tag != "crate") {
 				player.Release();
 				isHooked = false;
 			}
 
 			if (interacting == true){
-				//IF YOU ARE CONNECTED TO AN INTERACTABLE OBJECT
+				//IF YOU ARE CONNECTED TO A LEVER
+
+
+				//IF YOU ARE CONNECTED TO AN CRATE
 				jointTransform.position = new Vector3(distanceJoint.connectedBody.position.x + (center.x / 2), distanceJoint.connectedBody.position.y+ (center.y / 2), 0);
 				lineRenderer.SetPosition (1, joint.transform.position);
 				float newDistance = Mathf.Round((playerGo.transform.position.x - distanceJoint.connectedBody.position.x));
@@ -107,12 +110,13 @@ public class grappleHook : MonoBehaviour {
 					if (maxGrapple < 15 && maxGrapple > -15) {
 						//IF COLLISION DRAW LINE FROM PLAYER TO HIT LOCATION
 
-						if (hit.collider.tag == "interact_level"){
+						if (hit.collider.tag == "crate"){
 							//IF COLLISION IS AN INTERACTABLE OBJECT
 							interacting = true;
 							distanceJoint = playerGo.AddComponent<DistanceJoint2D>();
 							distanceJoint.connectedBody = hit.collider.attachedRigidbody;
 							originalDistance = Mathf.Round((playerGo.transform.position.x - distanceJoint.connectedBody.position.x));
+							Debug.Log (hit.collider);
 
 							if (target.x - playerGo.transform.position.x > 0) {
 								distanceJoint.distance = target.x - playerGo.transform.position.x;
@@ -124,25 +128,31 @@ public class grappleHook : MonoBehaviour {
 							distanceJoint.maxDistanceOnly = true;
 							isHooked = true;
 						}else {
-							//DETERMINE IF GRABBLE DISTANCE IS A CEILING
-							if (hit.collider.tag == "sticky_wall") {
-								grappleDistance = 1;
-							} else {
-								grappleDistance = (grappleDistance - 2);
+							if (hit.collider.tag == "lever") {
+								hit.collider.SendMessage("activate");
+
+							}else{
+								//DETERMINE IF GRABBLE DISTANCE IS A CEILING
+								if (hit.collider.tag == "sticky_wall") {
+									grappleDistance = 1;
+								} else {
+									grappleDistance = (grappleDistance - 2);
+								}
+
+								lineRenderer.SetPosition (1, hit.point);
+								//MOVE JOINT
+								jointTransform.position = new Vector3 (hit.point.x, hit.point.y, 0);
+
+								//CREATE DISTANCE JOINT
+								distanceJoint = playerGo.AddComponent<DistanceJoint2D> ();
+								distanceJoint.distance = grappleDistance;
+								distanceJoint.connectedBody = joint;
+
+								isHooked = true;
+
 							}
-
-							lineRenderer.SetPosition (1, hit.point);
-							//MOVE JOINT
-							jointTransform.position = new Vector3 (hit.point.x, hit.point.y, 0);
-
-							//CREATE DISTANCE JOINT
-							distanceJoint = playerGo.AddComponent<DistanceJoint2D> ();
-							distanceJoint.distance = grappleDistance;
-							distanceJoint.connectedBody = joint;
-
-							isHooked = true;
-
 						}
+
 					} else {
 						Debug.Log("TOO LONG");
 					}
