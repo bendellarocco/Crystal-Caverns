@@ -10,7 +10,7 @@ public class grappleHook : MonoBehaviour {
 	Vector3 target;
 	Vector3 center;
 	float grappleDistance;
-	float originalDistance;
+	public float originalDistance;
 	public LineRenderer lineRenderer;
 	public static bool isHooked = false;
 	public static bool interacting = false;
@@ -60,20 +60,16 @@ public class grappleHook : MonoBehaviour {
 			}
 
 			if (interacting == true){
-				//IF YOU ARE CONNECTED TO A LEVER
-
-
 				//IF YOU ARE CONNECTED TO AN CRATE
 				jointTransform.position = new Vector3(distanceJoint.connectedBody.position.x + (center.x / 2), distanceJoint.connectedBody.position.y+ (center.y / 2), 0);
 				lineRenderer.SetPosition (1, joint.transform.position);
 				float newDistance = Mathf.Round((playerGo.transform.position.x - distanceJoint.connectedBody.position.x));
-
+				newDistance = Mathf.Abs(newDistance);;
+				Debug.Log(newDistance);
 				//IF YOU GO SHORTER YOU ARE DISSCONNECTED
-				if(newDistance > originalDistance){
+				if(newDistance < (distanceJoint.distance -2)){
 					player.Release();
-
-
-
+					interacting = false;
 				}
 			}
 		}
@@ -111,25 +107,25 @@ public class grappleHook : MonoBehaviour {
 						//IF COLLISION DRAW LINE FROM PLAYER TO HIT LOCATION
 
 						if (hit.collider.tag == "crate"){
-							//IF COLLISION IS AN INTERACTABLE OBJECT
+							//IF COLLISION IS AN crate OBJECT
 							interacting = true;
 							distanceJoint = playerGo.AddComponent<DistanceJoint2D>();
 							distanceJoint.connectedBody = hit.collider.attachedRigidbody;
-							originalDistance = Mathf.Round((playerGo.transform.position.x - distanceJoint.connectedBody.position.x));
-							Debug.Log (hit.collider);
 
 							if (target.x - playerGo.transform.position.x > 0) {
 								distanceJoint.distance = target.x - playerGo.transform.position.x;
 							}else {
 								distanceJoint.distance = (target.x - playerGo.transform.position.x) * -1;
-								originalDistance = originalDistance * -1;
 							}
 							center = hit.collider.bounds.size;
 							distanceJoint.maxDistanceOnly = true;
 							isHooked = true;
 						}else {
 							if (hit.collider.tag == "lever") {
-								hit.collider.SendMessage("activate");
+								if (maxGrapple < 3 && maxGrapple > -3)
+								{
+									hit.collider.SendMessage("activate");
+								}
 
 							}else{
 								//DETERMINE IF GRABBLE DISTANCE IS A CEILING

@@ -5,9 +5,11 @@ public class fallingObject : MonoBehaviour {
 
 	public float fallSpeed;
 	Rigidbody2D target;
+	Vector3 originalPosition;
 
 	void Start () {
 		target = this.GetComponent<Rigidbody2D>();
+		originalPosition = this.transform.position;
 	}
 	
 
@@ -16,8 +18,6 @@ public class fallingObject : MonoBehaviour {
 		if (hit.collider.tag == "Player") {
 			target.isKinematic = false;
 			target.gravityScale = fallSpeed;
-
 		}
-
 	}
 }

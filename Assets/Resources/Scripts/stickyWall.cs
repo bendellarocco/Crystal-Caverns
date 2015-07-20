@@ -6,7 +6,7 @@ public class stickyWall : MonoBehaviour {
 	public static bool wallStuck = false;
 	
 	void Start () {
-	
+
 	}
 
 	void Update () {
@@ -15,7 +15,7 @@ public class stickyWall : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D collide){
 		if (collide.gameObject.tag == "Player") {
-				collide.rigidbody.drag = 10;
+				collide.rigidbody.drag = 3;
 				wallStuck = true;
 				player.wallJumped = false;
 			if (grappleHook.isHooked == true) {
