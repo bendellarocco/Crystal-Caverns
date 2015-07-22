@@ -26,15 +26,7 @@ public class fallingObject : MonoBehaviour {
 		} else {
 			if (collide.gameObject.tag == "Player") {
 				Application.LoadLevel (Application.loadedLevel);
-				Debug.Log(lever.test);
 			}
 		}
-
-	}
-	
-
-	public static void fallingReset() {
-
-
 	}
 }
