@@ -29,6 +29,12 @@ public class player : MonoBehaviour {
 
 		//MOVE/SWING
 		if (Input.acceleration.x > .09 || Input.acceleration.x < -.09) {
+			if (Input.acceleration.x > 0){
+				transform.rotation = Quaternion.Euler(0,0,0);
+			}else {
+				transform.rotation = Quaternion.Euler(0,180,0);
+			}
+
 			if (grappleHook.isHooked == false || grappleHook.interacting == true) {
 					Move ((Input.acceleration), speed);
 				}else {
@@ -44,21 +50,21 @@ public class player : MonoBehaviour {
 		//MULTIPLY BY DELTATIME SO IT MOVES PER SECOND NOT PER FRAME
 		horizontalInput *= Time.deltaTime;
 		horizontalInput *= momentum;
+		horizontalInput.x = Mathf.Abs (horizontalInput.x);
 
 
 		//SLOW DOWN INPUT IF ITS TOO HIGH
 		if (horizontalInput.x > .11){
 			horizontalInput.x = .11f;
-		}else {
-			if (horizontalInput.x < -.11) {
-				horizontalInput.x = -.11f;
-			}
 		}
+
 		//MOVE PLAYER
+		Debug.Log (horizontalInput.x);
 		transform.Translate((horizontalInput.x), 0, 0);
 	}
 
 	public void Swing(Vector2 horizontalInput, float momentum){
+		horizontalInput.x = Mathf.Abs (horizontalInput.x);
 			mybody.AddForce(transform.right * horizontalInput.x * momentum);
 	}
 
