@@ -59,7 +59,6 @@ public class player : MonoBehaviour {
 		}
 
 		//MOVE PLAYER
-		Debug.Log (horizontalInput.x);
 		transform.Translate((horizontalInput.x), 0, 0);
 	}
 

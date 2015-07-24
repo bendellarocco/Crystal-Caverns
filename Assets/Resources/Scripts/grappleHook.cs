@@ -65,7 +65,6 @@ public class grappleHook : MonoBehaviour {
 				lineRenderer.SetPosition (1, joint.transform.position);
 				float newDistance = Mathf.Round((playerGo.transform.position.x - distanceJoint.connectedBody.position.x));
 				newDistance = Mathf.Abs(newDistance);;
-				Debug.Log(newDistance);
 				//IF YOU GO SHORTER YOU ARE DISSCONNECTED
 				if(newDistance < (distanceJoint.distance -2)){
 					player.Release();
