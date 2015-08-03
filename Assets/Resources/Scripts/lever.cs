@@ -5,9 +5,12 @@ public class lever : MonoBehaviour {
 
 	public static bool active = false;
 	public GameObject interactTarget;
+	public GameObject ignorePlayer;
+
 
 	void Start () {
-	
+		Physics2D.IgnoreCollision(ignorePlayer.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+
 	}
 	
 
@@ -25,4 +28,6 @@ public class lever : MonoBehaviour {
 		}
 
 	}
+
+
 }
