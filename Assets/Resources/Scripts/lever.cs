@@ -10,9 +10,7 @@ public class lever : MonoBehaviour {
 
 	void Start () {
 		Physics2D.IgnoreCollision(ignorePlayer.GetComponent<Collider2D>(), GetComponent<Collider2D>());
-
 	}
-	
 
 	void Update () {
 	

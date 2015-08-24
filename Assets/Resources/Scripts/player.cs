@@ -11,12 +11,15 @@ public class player : MonoBehaviour {
 	bool isGrounded = false;
 	public static bool wallJumped = false;
 	int mask = 1 << 9;
+	bool rotationReset = true;
+	float rotation;
 	
 	void Start () {
 		mask = ~mask;
 		mybody = this.GetComponent<Rigidbody2D>();
 		myTrans = this.transform;
 		tagGround = GameObject.Find(this.name + "/tag_ground").transform;
+		rotation = transform.localScale.x;
 	}
 
 	void FixedUpdate () {
@@ -29,10 +32,10 @@ public class player : MonoBehaviour {
 
 		//MOVE/SWING
 		if (Input.acceleration.x > .09 || Input.acceleration.x < -.09) {
-			if (Input.acceleration.x > 0){
-				transform.rotation = Quaternion.Euler(0,0,0);
+			if (Input.acceleration.x > .09){
+				transform.localScale = new Vector3 (rotation, transform.localScale.y, transform.localScale.z);
 			}else {
-				transform.rotation = Quaternion.Euler(0,180,0);
+				transform.localScale = new Vector3 (-rotation, transform.localScale.y, transform.localScale.z);
 			}
 
 			if (grappleHook.isHooked == false || grappleHook.interacting == true) {
@@ -40,6 +43,8 @@ public class player : MonoBehaviour {
 				}else {
 					Swing ((Input.acceleration), swingVelocity);
 				}
+		} else {
+			rotationReset = true;
 		}
 	}
 		
@@ -50,12 +55,15 @@ public class player : MonoBehaviour {
 		//MULTIPLY BY DELTATIME SO IT MOVES PER SECOND NOT PER FRAME
 		horizontalInput *= Time.deltaTime;
 		horizontalInput *= momentum;
-		horizontalInput.x = Mathf.Abs (horizontalInput.x);
+		//horizontalInput.x = Mathf.Abs (horizontalInput.x);
 
 
 		//SLOW DOWN INPUT IF ITS TOO HIGH
-		if (horizontalInput.x > .11){
+		if (horizontalInput.x > .11) {
 			horizontalInput.x = .11f;
+		} else 
+			if (horizontalInput.x < -.11) {
+			horizontalInput.x = -.11f;
 		}
 
 		//MOVE PLAYER
@@ -63,7 +71,7 @@ public class player : MonoBehaviour {
 	}
 
 	public void Swing(Vector2 horizontalInput, float momentum){
-		horizontalInput.x = Mathf.Abs (horizontalInput.x);
+		//horizontalInput.x = Mathf.Abs (horizontalInput.x);
 			mybody.AddForce(transform.right * horizontalInput.x * momentum);
 	}
 
