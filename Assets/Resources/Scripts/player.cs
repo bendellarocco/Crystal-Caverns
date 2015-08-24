@@ -6,7 +6,8 @@ public class player : MonoBehaviour {
 	float speed = 20;
 	float jumpVelocity = 7;
 	float swingVelocity = 3;
-	Transform myTrans, tagGround;
+	public static Transform myTrans; 
+	Transform tagGround;
 	public static Rigidbody2D mybody;
 	bool isGrounded = false;
 	public static bool wallJumped = false;
