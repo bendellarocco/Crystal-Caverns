@@ -12,7 +12,6 @@ public class player : MonoBehaviour {
 	bool isGrounded = false;
 	public static bool wallJumped = false;
 	int mask = 1 << 9;
-	bool rotationReset = true;
 	float rotation;
 	
 	void Start () {
@@ -44,8 +43,6 @@ public class player : MonoBehaviour {
 				}else {
 					Swing ((Input.acceleration), swingVelocity);
 				}
-		} else {
-			rotationReset = true;
 		}
 	}
 		

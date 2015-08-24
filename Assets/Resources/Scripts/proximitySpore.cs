@@ -2,8 +2,7 @@
 using System.Collections;
 
 public class proximitySpore : MonoBehaviour {
-
-	bool inRange = false;
+	
 	public float range;
 	float distance;
 
@@ -17,7 +16,7 @@ public class proximitySpore : MonoBehaviour {
 		distance = Vector3.Distance (player.myTrans.position, this.transform.position);
 
 		if (distance <= range) {
-			Debug.Log ("TOO FUCKIN CLOSE");
+			Debug.Log ("TOO CLOSE");
 		}
 	
 	}
