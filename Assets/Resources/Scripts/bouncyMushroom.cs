@@ -18,7 +18,7 @@ public class bouncyMushroom : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D hit) {
 		if (hit.collider.tag == "Player") {
 			//hit.rigidbody.AddForce(new Vector2(-hit.relativeVelocity.x, hit.relativeVelocity.y) * bounce, ForceMode2D.Impulse);
-			hit.rigidbody.AddForce(Vector2.up * bounce, ForceMode2D.Impulse);
+			//hit.rigidbody.AddForce(Vector2.up * bounce, ForceMode2D.Impulse);
 		}
 
 	}
