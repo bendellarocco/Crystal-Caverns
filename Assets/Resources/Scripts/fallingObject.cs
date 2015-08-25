@@ -5,7 +5,6 @@ public class fallingObject : MonoBehaviour {
 
 	public float fallSpeed;
 	Rigidbody2D target;
-	public Renderer rend;
 
 	void Start () {
 		target = this.GetComponent<Rigidbody2D>();
