@@ -27,7 +27,7 @@ public class player : MonoBehaviour {
 
 		//TEST IF YOURE FALLING TOO FAST YOU DIE
 		if (mybody.velocity.y < -17) {
-			Debug.Log ("DEAD");
+			Application.LoadLevel (Application.loadedLevel);;
 		}
 
 		//MOVE/SWING
