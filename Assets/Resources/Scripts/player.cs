@@ -13,6 +13,8 @@ public class player : MonoBehaviour {
 	public static bool wallJumped = false;
 	int mask = 1 << 9;
 	float rotation;
+	public static GameObject touching;
+
 	
 	void Start () {
 		mask = ~mask;
@@ -23,7 +25,13 @@ public class player : MonoBehaviour {
 	}
 
 	void FixedUpdate () {
+
 		isGrounded = Physics2D.Linecast (myTrans.position, tagGround.position, mask);
+
+		//I HATE THIS BUT ILL FIX IT LATER
+		if (isGrounded == true) {
+			stickyWall.wallStuck = false;
+		}
 
 		//TEST IF YOURE FALLING TOO FAST YOU DIE
 		if (mybody.velocity.y < -17) {
@@ -32,17 +40,19 @@ public class player : MonoBehaviour {
 
 		//MOVE/SWING
 		if (Input.acceleration.x > .09 || Input.acceleration.x < -.09) {
-			if (Input.acceleration.x > .09){
-				transform.localScale = new Vector3 (rotation, transform.localScale.y, transform.localScale.z);
-			}else {
-				transform.localScale = new Vector3 (-rotation, transform.localScale.y, transform.localScale.z);
-			}
+			if (stickyWall.wallStuck == false) {
+				if (Input.acceleration.x > .09) {
+					transform.localScale = new Vector3 (rotation, transform.localScale.y, transform.localScale.z);
+				} else {
+					transform.localScale = new Vector3 (-rotation, transform.localScale.y, transform.localScale.z);
+				}
 
-			if (grappleHook.isHooked == false || grappleHook.interacting == true) {
+				if (grappleHook.isHooked == false || grappleHook.interacting == true) {
 					Move ((Input.acceleration), speed);
-				}else {
+				} else {
 					Swing ((Input.acceleration), swingVelocity);
 				}
+			}
 		}
 	}
 		
@@ -74,19 +84,29 @@ public class player : MonoBehaviour {
 	}
 
 	public void Jump() {
-
 		//CORRECT JUMP ALGORITH.  CHECKS IF PLAYER IS ON THE GROUND/HOOKED/OR STUCK TO WALL
 		if (isGrounded == true && grappleHook.isHooked == false) {
 			mybody.velocity += jumpVelocity * Vector2.up;
 		} else {
-				if (stickyWall.wallStuck == true) {
-					if (wallJumped == false) {
-						mybody.drag = 0;
-						wallJumped = true;
-					}
+			if (stickyWall.wallStuck == true) {
+				if (wallJumped == false) {
+					mybody.drag = 0;
+					wallJumped = true;
+					wallJump ();
 				}
 			}
 		}
+	}
+
+	public void wallJump() {
+		//Jumping if youre on the wall
+		if (touching.name == "Right Stick") {
+			mybody.AddForce (myTrans.right * 100);
+		} else {
+			mybody.AddForce (-myTrans.right * 100);
+		}
+		mybody.velocity += jumpVelocity * Vector2.up;
+	}
 
 	public static void Release() {
 		Destroy (mybody.GetComponent<SpringJoint2D>(), 0);

@@ -18,6 +18,7 @@ public class stickyWall : MonoBehaviour {
 				collide.rigidbody.drag = 4;
 				wallStuck = true;
 				player.wallJumped = false;
+			player.touching = this.gameObject;
 			if (grappleHook.isHooked == true) {
 				grappleHook.isHooked = false;
 				Destroy(collide.rigidbody.GetComponent<DistanceJoint2D>(), 0);
