@@ -101,8 +101,10 @@ public class player : MonoBehaviour {
 	public void wallJump() {
 		//Jumping if youre on the wall
 		if (touching.name == "Right Stick") {
+			transform.localScale = new Vector3 (rotation, transform.localScale.y, transform.localScale.z);
 			mybody.AddForce (myTrans.right * 100);
 		} else {
+			transform.localScale = new Vector3 (-rotation, transform.localScale.y, transform.localScale.z);
 			mybody.AddForce (-myTrans.right * 100);
 		}
 		mybody.velocity += jumpVelocity * Vector2.up;
