@@ -3,7 +3,7 @@ using System.Collections;
 
 public class player : MonoBehaviour {
 
-	float speed = 20;
+	float speed = 60;
 	float jumpVelocity = 7;
 	float swingVelocity = 3;
 	public static Transform myTrans; 
@@ -34,14 +34,16 @@ public class player : MonoBehaviour {
 		}
 
 		//TEST IF YOURE FALLING TOO FAST YOU DIE
-		if (mybody.velocity.y < -17) {
+		if (mybody.velocity.y < -25) {
 			Application.LoadLevel (Application.loadedLevel);;
+			Debug.Log("DIEDFROMFALLING");
 		}
 
 		//MOVE/SWING
-		if (Input.acceleration.x > .09 || Input.acceleration.x < -.09) {
+		//OLD WAY Input.acceleration.x > .09 || Input.acceleration.x < -.09
+		if (Input.acceleration.x != 0) {
 			if (stickyWall.wallStuck == false) {
-				if (Input.acceleration.x > .09) {
+				if (Input.acceleration.x > .001) {
 					transform.localScale = new Vector3 (rotation, transform.localScale.y, transform.localScale.z);
 				} else {
 					transform.localScale = new Vector3 (-rotation, transform.localScale.y, transform.localScale.z);

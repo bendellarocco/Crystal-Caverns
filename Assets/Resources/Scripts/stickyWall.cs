@@ -15,7 +15,7 @@ public class stickyWall : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D collide){
 		if (collide.gameObject.tag == "Player") {
-				collide.rigidbody.drag = 4;
+				collide.rigidbody.drag = 1;
 				wallStuck = true;
 				player.wallJumped = false;
 			player.touching = this.gameObject;
