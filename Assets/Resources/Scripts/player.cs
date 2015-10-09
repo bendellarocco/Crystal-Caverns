@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class player : MonoBehaviour {
@@ -69,11 +69,11 @@ public class player : MonoBehaviour {
 
 
 		//SLOW DOWN INPUT IF ITS TOO HIGH
-		if (horizontalInput.x > .11) {
-			horizontalInput.x = .11f;
+		if (horizontalInput.x > .15) {
+			horizontalInput.x = .15f;
 		} else 
-			if (horizontalInput.x < -.11) {
-			horizontalInput.x = -.11f;
+			if (horizontalInput.x < -.15) {
+			horizontalInput.x = -.15f;
 		}
 
 		//MOVE PLAYER
